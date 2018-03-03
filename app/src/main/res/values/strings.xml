@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Movies</string>
+
+    <!-- THE MOVIE DB -->
+    <string name="api_key">4681755dbe9184e2d9a51e441de6985b</string>
+    <string name="api_base_url">https://api.themoviedb.org/3/</string>
+    <string name="image_url">http://image.tmdb.org/t/p/w342//</string>
+    <string name="title_activity_movie_details">MovieDetails</string>
+
+    <!-- menu items -->
+    <string name="top_rated_movies">Top rated movies</string>
+    <string name="popular_movies">Most popular movies</string>
+
+    <!-- put extras - intent -->
+    <string name="TITLE">TITLE</string>
+    <string name="POSTER">POSTER</string>
+    <string name="VOTE_COUNT">VOTE_COUNT</string>
+    <string name="VOTE_AVERAGE">VOTE_AVERAGE</string>
+    <string name="ORGINAL_LANGUAGE">ORGINAL_LANGUAGE</string>
+    <string name="ORGINAL_TITLE">ORGINAL_TITLE</string>
+    <string name="BACKDROP_PATH">BACKDROP_PATH</string>
+    <string name="IF_ADULT">IF_ADULT</string>
+    <string name="OVERVIEW">OVERVIEW</string>
+    <string name="REALEASE_DATE">REALEASE_DATE</string>
+
+
+</resources>
