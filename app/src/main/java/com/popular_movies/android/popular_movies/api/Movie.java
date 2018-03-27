@@ -1,4 +1,4 @@
-package com.popular_movies.android.popular_movies;
+package com.popular_movies.android.popular_movies.api;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -55,6 +55,10 @@ public class Movie {
 
     }
 
+    public int getId(){
+        return id;
+    }
+
     public int getVoteCount() {
         return voteCount;
     }
@@ -66,6 +70,7 @@ public class Movie {
     public String getTitle() {
         return title;
     }
+
     public String getOrginalLanguage() {
         return orginalLanguage;
     }
@@ -97,8 +102,5 @@ public class Movie {
     public String getReleaseDate() {
         return releaseDate;
     }
-
-
-
 
 }

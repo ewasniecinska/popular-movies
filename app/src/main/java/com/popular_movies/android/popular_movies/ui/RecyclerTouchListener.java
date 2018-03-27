@@ -1,4 +1,4 @@
-package com.popular_movies.android.popular_movies;
+package com.popular_movies.android.popular_movies.ui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,7 @@ import android.view.View;
  * Created by ewasniecinska on 28.02.2018.
  */
 
-class RecyclerTouchListener implements RecyclerView.OnItemTouchListener{
+public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener{
 
     private OnItemClickListener clicklistener;
     private GestureDetector gestureDetector;

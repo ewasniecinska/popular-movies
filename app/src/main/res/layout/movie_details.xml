@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,51 +12,22 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="518dp">
-
-            <View
-                android:id="@+id/view2"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:background="#90909090"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/orginal_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="16dp"
+                android:id="@+id/release_date"
+                android:layout_width="162dp"
+                android:layout_height="25dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:gravity="left"
-                android:letterSpacing="0.1"
-                android:text="Orginal"
+                android:layout_marginTop="8dp"
+                android:drawableLeft="@drawable/ic_star"
+                android:drawablePadding="@dimen/iconToText"
+                android:drawableTint="@color/cardview_dark_background"
+                android:text="10-10-2000"
                 android:textColor="@color/cardview_dark_background"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="18dp"
                 app:layout_constraintStart_toEndOf="@+id/poster"
-                app:layout_constraintTop_toBottomOf="@+id/orginal_title_label"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/orginal_title_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="ORGINAL TITLE"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorHighlight="@color/cardview_shadow_start_color"
-                android:textSize="12dp"
-                app:layout_constraintStart_toEndOf="@+id/poster"
-                app:layout_constraintTop_toBottomOf="@+id/title" />
+                app:layout_constraintTop_toBottomOf="@+id/vote_average" />
 
             <TextView
                 android:id="@+id/title"
@@ -67,43 +36,17 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="16dp"
+                android:autoSizeMinTextSize="@dimen/fab_margin"
                 android:gravity="left"
                 android:letterSpacing="0.1"
                 android:text="Movie title"
-                android:textColor="@color/cardview_dark_background"
-                android:textSize="16dp"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/poster"
-                app:layout_constraintTop_toBottomOf="@+id/title_label"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/title_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:shadowColor="@color/cardview_shadow_start_color"
-                android:text="TITLE"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                app:layout_constraintStart_toEndOf="@+id/poster"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/release_date_label"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="RELEASE DATE"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorHighlight="@color/cardview_shadow_start_color"
-                android:textSize="12dp"
-                app:layout_constraintStart_toEndOf="@+id/poster"
-                app:layout_constraintTop_toBottomOf="@+id/orginal_title" />
 
             <ImageView
                 android:id="@+id/poster"
@@ -117,134 +60,110 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="spread_inside" />
 
+
             <TextView
-                android:id="@+id/release_date"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="16dp"
+                android:id="@+id/vote_average"
+                android:layout_width="146dp"
+                android:layout_height="26dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:gravity="left"
-                android:letterSpacing="0.1"
-                android:text="11-11-2000"
+                android:layout_marginTop="16dp"
+                android:drawableLeft="@drawable/ic_star"
+                android:drawablePadding="@dimen/iconToText"
+                android:drawableTint="@color/cardview_dark_background"
+                android:text="3.8"
                 android:textColor="@color/cardview_dark_background"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                android:textSize="18dp"
                 app:layout_constraintStart_toEndOf="@+id/poster"
-                app:layout_constraintTop_toBottomOf="@+id/release_date_label"
-                tools:ignore="MissingConstraints" />
+                app:layout_constraintTop_toBottomOf="@+id/title" />
 
-            <View
-                android:id="@+id/view"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
+            <Button
+                android:id="@+id/addToFavorite"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="39dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:background="#90909090"
+                android:background="@android:color/holo_red_light"
+                android:text="ADD TO FAVORITE"
+                android:textColor="@color/cardview_light_background"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/poster" />
+                app:layout_constraintStart_toEndOf="@+id/poster"
+                app:layout_constraintTop_toBottomOf="@+id/release_date" />
 
-
-            <TextView
-                android:id="@+id/overview"
+            <TabHost
+                android:id="@+id/taphost"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:text="Overview"
-                android:textColor="@color/cardview_dark_background"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/overview_label" />
-
-            <TextView
-                android:id="@+id/overview_label"
-                android:layout_width="wrap_content"
-                android:layout_height="15dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="OVERVIEW"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view2" />
-
-            <LinearLayout
-                android:id="@+id/linearLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/view"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="0dp">
-
+                app:layout_constraintTop_toBottomOf="@+id/poster">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:gravity="center"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/vote_avg_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="VOTE AVERAGE"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/cardview_shadow_start_color"
-                        android:textSize="12dp" />
+                    <TabWidget
+                        android:id="@android:id/tabs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:id="@+id/vote_average"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="3.8"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="20dp" />
+                    <FrameLayout
+                        android:id="@android:id/tabcontent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
+                        <LinearLayout
+                            android:id="@+id/tab1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <android.support.constraint.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/overview"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
+                                    android:lineSpacingExtra="4sp"
+                                    android:text="Overview"
+                                    android:textColor="@color/cardview_dark_background"
+                                    android:textSize="16sp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+                            </android.support.constraint.ConstraintLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/tab2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/tab3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+                    </FrameLayout>
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/vote_count_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="VOTE COUNT"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/cardview_shadow_start_color"
-                        android:textSize="12dp" />
-
-                    <TextView
-                        android:id="@+id/vote_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="11-11-2000"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="20dp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
+            </TabHost>
 
         </android.support.constraint.ConstraintLayout>
-
 
     </LinearLayout>
 

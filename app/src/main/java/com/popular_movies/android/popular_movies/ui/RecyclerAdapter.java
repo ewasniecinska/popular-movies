@@ -1,4 +1,4 @@
-package com.popular_movies.android.popular_movies;
+package com.popular_movies.android.popular_movies.ui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.popular_movies.android.popular_movies.api.Movie;
+import com.popular_movies.android.popular_movies.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

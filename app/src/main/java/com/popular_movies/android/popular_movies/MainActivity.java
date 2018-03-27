@@ -10,6 +10,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.popular_movies.android.popular_movies.api.Movie;
+import com.popular_movies.android.popular_movies.api.DiscoverResult;
+import com.popular_movies.android.popular_movies.api.MoviesService;
+import com.popular_movies.android.popular_movies.ui.OnItemClickListener;
+import com.popular_movies.android.popular_movies.ui.RecyclerAdapter;
+import com.popular_movies.android.popular_movies.ui.RecyclerTouchListener;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager);
 
 
-        // get list of Movies from movie database
+        // get list of DiscoverResult from movie database
         getListTopRatedOfMovies();
 
 
@@ -44,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, final int position) {
 
-                Intent intent = new Intent(getApplicationContext(), MovieDetails.class);
+                Intent intent = new Intent(getApplicationContext(), MovieDetailsActivity.class);
+                intent.putExtra(getString(R.string.ID), movies.get(position).getId());
                 intent.putExtra(getString(R.string.TITLE), movies.get(position).getTitle());
                 intent.putExtra(getString(R.string.POSTER), movies.get(position).getPosterPath());
                 intent.putExtra(getString(R.string.VOTE_COUNT), movies.get(position).getVoteCount());
@@ -60,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }));
-
+        
     }
 
     // menu -> create
@@ -95,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         MoviesService service = retrofit.create(MoviesService.class);
-        Call<Movies> call = service.getTopRatedMovies(getString(R.string.api_key));
+        Call<DiscoverResult> call = service.getTopRatedMovies(getString(R.string.api_key));
 
         callApi(call);
 
@@ -111,20 +119,20 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         MoviesService service = retrofit.create(MoviesService.class);
-        Call<Movies> call = service.getMostPopularMovies(getString(R.string.api_key));
+        Call<DiscoverResult> call = service.getMostPopularMovies(getString(R.string.api_key));
 
         callApi(call);
     }
 
-    public void callApi(Call<Movies> call){
-        call.enqueue(new Callback<Movies>() {
+    public void callApi(Call<DiscoverResult> call){
+        call.enqueue(new Callback<DiscoverResult>() {
             @Override
-            public void onResponse(Call<Movies> call, Response<Movies> response) {
-                movies = response.body().getResults();
+            public void onResponse(Call<DiscoverResult> call, Response<DiscoverResult> response) {
+                movies = response.body().getListOfMovies();
                 recyclerView.setAdapter(new RecyclerAdapter(movies, getApplicationContext(), R.layout.row_layout));
             }
             @Override
-            public void onFailure(Call<Movies> call, Throwable throwable) {
+            public void onFailure(Call<DiscoverResult> call, Throwable throwable) {
             }
         });
     }
