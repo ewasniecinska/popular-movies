@@ -2,7 +2,7 @@
     <string name="app_name">Movies</string>
 
     <!-- THE MOVIE DB -->
-    <string name="api_key">ENTER YOUR KEY</string>
+    <string name="api_key">4681755dbe9184e2d9a51e441de6985b</string>
     <string name="api_base_url">https://api.themoviedb.org/3/</string>
     <string name="image_url">http://image.tmdb.org/t/p/w342//</string>
     <string name="title_activity_movie_details">MovieDetails</string>
@@ -10,6 +10,7 @@
     <!-- menu items -->
     <string name="top_rated_movies">Top rated movies</string>
     <string name="popular_movies">Most popular movies</string>
+    <string name="favorite_movies">Favorite</string>
 
     <!-- put extras - intent -->
     <string name="ID">ID</string>

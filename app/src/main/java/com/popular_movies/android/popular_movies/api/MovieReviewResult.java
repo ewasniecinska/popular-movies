@@ -1,7 +1,5 @@
 package com.popular_movies.android.popular_movies.api;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 /**
@@ -10,26 +8,27 @@ import java.util.List;
 
 public class MovieReviewResult {
 
-        private long id;
+        private int id;
         private int page;
         private List<MovieReview> results;
-        @SerializedName("total_results")
-        private int totalResults;
-        @SerializedName("total_pages")
-        private int totalPages;
+        private int total_pages;
+        private int total_results;
 
 
-        public MovieReviewResult(long id, int page, List<MovieReview> results, int totalResults, int totalPages){
 
+        public MovieReviewResult(int id, int page, List<MovieReview> results, int total_pages, int total_results){
+
+            this.id = id;
             this.page = page;
-            this.totalResults = totalResults;
-            this.totalPages = totalPages;
             this.results = results;
+            this.total_pages = total_pages;
+            this.total_results = total_results;
+
         }
 
 
         public int getTotalResults() {
-            return totalResults;
+            return total_results;
         }
 
         public List<MovieReview> getMovieReviews() {

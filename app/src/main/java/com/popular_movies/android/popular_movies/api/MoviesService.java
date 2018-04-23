@@ -11,8 +11,6 @@ import retrofit2.http.Query;
 
 public interface MoviesService {
 
-    // https://api.themoviedb.org/3/movie/top_rated?api_key=API_KEY
-
     @GET("movie/top_rated")
     Call<DiscoverResult> getTopRatedMovies(@Query("api_key") String user);
 
@@ -23,8 +21,8 @@ public interface MoviesService {
     Call<Movie> getMovieById(@Path("id") String movieId, @Query("api_key") String user);
 
     @GET("movie/{id}/videos")
-    Call<MovieTrailerResult> getMovieTrailers(@Path("id") String movieId, @Query("api_key") String user);
+    Call<MovieTrailerResult> getMovieTrailers(@Path("id") Integer movieId, @Query("api_key") String user);
 
     @GET("movie/{id}/reviews")
-    Call<MovieReviewResult> getMovieReviews(@Path("id") String movieId, @Query("api_key") String user);
+    Call<MovieReviewResult> getMovieReviews(@Path("id") Integer movieId, @Query("api_key") String user);
 }

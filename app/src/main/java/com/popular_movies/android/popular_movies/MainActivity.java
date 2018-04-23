@@ -1,18 +1,23 @@
 package com.popular_movies.android.popular_movies;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.popular_movies.android.popular_movies.api.Movie;
 import com.popular_movies.android.popular_movies.api.DiscoverResult;
+import com.popular_movies.android.popular_movies.api.Movie;
 import com.popular_movies.android.popular_movies.api.MoviesService;
+import com.popular_movies.android.popular_movies.data.MovieProvider;
 import com.popular_movies.android.popular_movies.ui.OnItemClickListener;
 import com.popular_movies.android.popular_movies.ui.RecyclerAdapter;
 import com.popular_movies.android.popular_movies.ui.RecyclerTouchListener;
@@ -30,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView = null;
     private List<Movie> movies;
 
+    ContentResolver contentResolver;
+    Cursor cursor;
+    Uri uri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         // get list of DiscoverResult from movie database
         getListTopRatedOfMovies();
 
+        uri = MovieProvider.CONTENT_URI;
+
+        contentResolver = getContentResolver();
+
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 recyclerView, new OnItemClickListener() {
@@ -53,14 +66,10 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), MovieDetailsActivity.class);
                 intent.putExtra(getString(R.string.ID), movies.get(position).getId());
+                Log.d("intent", String.valueOf(movies.get(position).getId()));
                 intent.putExtra(getString(R.string.TITLE), movies.get(position).getTitle());
                 intent.putExtra(getString(R.string.POSTER), movies.get(position).getPosterPath());
-                intent.putExtra(getString(R.string.VOTE_COUNT), movies.get(position).getVoteCount());
                 intent.putExtra(getString(R.string.VOTE_AVERAGE), movies.get(position).getVoteAverage());
-                intent.putExtra(getString(R.string.ORGINAL_LANGUAGE), movies.get(position).getOrginalLanguage());
-                intent.putExtra(getString(R.string.ORGINAL_TITLE), movies.get(position).getOriginalTitle());
-                intent.putExtra(getString(R.string.BACKDROP_PATH), movies.get(position).getBackdropPath());
-                intent.putExtra(getString(R.string.IF_ADULT), movies.get(position).getIfAdult());
                 intent.putExtra(getString(R.string.OVERVIEW), movies.get(position).getOverview());
                 intent.putExtra(getString(R.string.REALEASE_DATE), movies.get(position).getReleaseDate());
 
@@ -89,8 +98,46 @@ public class MainActivity extends AppCompatActivity {
             case R.id.popular:
                 getListOfPopularMovies();
                 return true;
+            case R.id.favorite:
+                getFavoriteMovies();
+                return true;
+
+
         }
         return true;
+    }
+
+    public void getFavoriteMovies(){
+        // set screen title
+        movies.clear();
+        setTitle(getString(R.string.favorite_movies));
+        cursor = contentResolver.query(uri, null, null, null, null);
+
+        if (cursor.moveToFirst()){
+            Movie movie;
+
+            int i = 0;
+
+            do{
+                int id = cursor.getInt(cursor.getColumnIndex("id"));
+                String title = cursor.getString(cursor.getColumnIndex("title"));
+                String score = cursor.getString(cursor.getColumnIndex("score"));
+                String overview = cursor.getString(cursor.getColumnIndex("overview"));
+                String date = cursor.getString(cursor.getColumnIndex("date"));
+                String poster = cursor.getString(cursor.getColumnIndex("poster"));
+                movie = new Movie(0, id, false, score, title,
+                        null, poster, null, null,
+                        null, null, false, overview,
+                        date);
+                movies.add(movie);
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+
+        recyclerView.setAdapter(new RecyclerAdapter(movies, getApplicationContext(), R.layout.row_layout));
+
+
     }
 
     public void getListTopRatedOfMovies(){
