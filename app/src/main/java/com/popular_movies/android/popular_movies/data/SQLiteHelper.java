@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.util.Log;
 
 /**
  * Created by ewasniecinska on 15.04.2018.
@@ -43,7 +42,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         // close db connection
         db.close();
 
-        Log.d("database", "movie added to database");
         // return newly inserted row id
         return row;
     }

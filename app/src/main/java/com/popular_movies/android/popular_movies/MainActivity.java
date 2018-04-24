@@ -1,13 +1,17 @@
 package com.popular_movies.android.popular_movies;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +26,7 @@ import com.popular_movies.android.popular_movies.ui.OnItemClickListener;
 import com.popular_movies.android.popular_movies.ui.RecyclerAdapter;
 import com.popular_movies.android.popular_movies.ui.RecyclerTouchListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -38,26 +43,23 @@ public class MainActivity extends AppCompatActivity {
     ContentResolver contentResolver;
     Cursor cursor;
     Uri uri;
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // recyclerView -> create
+        sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        // recyclerView -> create and set gridLayoutManager
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), calculateNoOfColumns(this));
         recyclerView.setLayoutManager(gridLayoutManager);
 
-
-        // get list of DiscoverResult from movie database
-        getListTopRatedOfMovies();
-
         uri = MovieProvider.CONTENT_URI;
-
         contentResolver = getContentResolver();
 
+        getSavedSortBy();
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 recyclerView, new OnItemClickListener() {
@@ -78,6 +80,16 @@ public class MainActivity extends AppCompatActivity {
 
         }));
         
+    }
+
+    public static int calculateNoOfColumns(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int scalingFactor = 180;
+        int noOfColumns = (int) (dpWidth / scalingFactor);
+        if(noOfColumns < 2)
+            noOfColumns = 2;
+        return noOfColumns;
     }
 
     // menu -> create
@@ -101,23 +113,47 @@ public class MainActivity extends AppCompatActivity {
             case R.id.favorite:
                 getFavoriteMovies();
                 return true;
-
-
         }
         return true;
     }
 
+    public void getSavedSortBy(){
+        String sortMode = sharedpreferences.getString(getString(R.string.sort), "");
+        switch (sortMode) {
+            case "Top rated movies":
+                getListTopRatedOfMovies();
+                return;
+            case "Most popular movies":
+                getListOfPopularMovies();
+                return;
+            case "Favorite":
+                getFavoriteMovies();
+                return ;
+            case "":
+                getListTopRatedOfMovies();
+                return ;
+        }
+    }
+
+    public void updateSharedPreference(String sortMode){
+        SharedPreferences.Editor edit = sharedpreferences.edit();
+        edit.putString(getString(R.string.sort), sortMode);
+        edit.commit();
+    }
+
     public void getFavoriteMovies(){
-        // set screen title
-        movies.clear();
+        updateSharedPreference(getString(R.string.favorite_movies));
+
         setTitle(getString(R.string.favorite_movies));
+
+        // clear current list of movies
+        movies = new ArrayList<Movie>();
+
+        // get all favorite movies from database
         cursor = contentResolver.query(uri, null, null, null, null);
 
         if (cursor.moveToFirst()){
             Movie movie;
-
-            int i = 0;
-
             do{
                 int id = cursor.getInt(cursor.getColumnIndex("id"));
                 String title = cursor.getString(cursor.getColumnIndex("title"));
@@ -141,7 +177,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getListTopRatedOfMovies(){
-        // set screen title
+
+        updateSharedPreference(getString(R.string.top_rated_movies));
+
         setTitle(getString(R.string.top_rated_movies));
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -157,7 +195,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getListOfPopularMovies(){
-        // set screen title
+        updateSharedPreference(getString(R.string.popular_movies));
+
         setTitle(getString(R.string.popular_movies));
 
         Retrofit retrofit = new Retrofit.Builder()

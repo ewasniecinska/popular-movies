@@ -31,6 +31,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,8 +49,19 @@ public class MovieDetailsActivity extends AppCompatActivity {
     public List<TrailerListItem> listTrailers = new ArrayList<TrailerListItem>();
     public Integer movieId;
     public SQLiteHelper myDb;
-    Button addToFavorite;
     boolean isFavorite = false;
+
+    @BindView(R.id.title) TextView title;
+    @BindView(R.id.vote_average) TextView voteAvg;
+    @BindView(R.id.release_date) TextView releaseDate;
+    @BindView(R.id.overview) TextView overview;
+    @BindView(R.id.poster) ImageView poster;
+    @BindView(R.id.addToFavorite) Button addToFavorite;
+    @BindView(R.id.taphost) TabHost mTabHost;
+    @BindView(R.id.list_tab2) ListView reviewsTabList;
+    @BindView(R.id.list_tab3) ListView trailersTabList;
+
+
 
     ContentResolver contentResolver;
     Uri uri;
@@ -79,20 +92,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
 
     public void updateUI(final Intent intent) {
-        final TextView title = findViewById(R.id.title);
-        final TextView voteAvg = findViewById(R.id.vote_average);
-        final TextView releaseDate = findViewById(R.id.release_date);
-        final TextView overview = findViewById(R.id.overview);
-        final ImageView poster = findViewById(R.id.poster);
-        addToFavorite = findViewById(R.id.addToFavorite);
+        ButterKnife.bind(this);
 
         addToFavorite.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 new FavoriteButtonAction().execute();
             }
         });
-
-        final TabHost mTabHost = (TabHost) findViewById(R.id.taphost);
 
         mTabHost.setup();
 
@@ -108,16 +114,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         spec.setIndicator("REVIEWS");
         mTabHost.addTab(spec);
 
-
-        ListView list = (ListView) findViewById(R.id.list_tab2);
-
-
-        String[] stockArr = new String[listReviews.size()];
-        stockArr = listReviews.toArray(stockArr);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_tab2_row, stockArr);
-
-        list.setAdapter(adapter);
+        setUpTabReviews();
 
         //Tab 3
         spec = mTabHost.newTabSpec("TRAILERS");
@@ -125,31 +122,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
         spec.setIndicator("TRAILERS");
         mTabHost.addTab(spec);
 
-        final ListView trailersList = (ListView) findViewById(R.id.list_tab3);
+        setUpTabTrailers();
 
-        String[] trailersNamesArray = new String[listTrailers.size()];
 
-        for (int i = 0; i < listTrailers.size(); i++) {
-            TrailerListItem item = listTrailers.get(i);
-            trailersNamesArray[i] = item.trailerName;
-        }
 
-        ArrayAdapter<String> trailersListAdapter = new ArrayAdapter<String>(this, R.layout.list_tab2_row, trailersNamesArray);
-
-        trailersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-
-                TrailerListItem item = listTrailers.get(position);
-                String url = item.trailerUrl;
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            }
-        });
-
-        trailersList.setAdapter(trailersListAdapter);
         title.setText(intent.getStringExtra(getString(R.string.TITLE)));
         voteAvg.setText(intent.getStringExtra(getString(R.string.VOTE_AVERAGE)));
         releaseDate.setText(intent.getStringExtra(getString(R.string.REALEASE_DATE)));
@@ -162,6 +138,49 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 .placeholder(android.R.drawable.sym_def_app_icon)
                 .error(android.R.drawable.sym_def_app_icon)
                 .into(poster);
+    }
+
+    public void setUpTabReviews(){
+
+        String[] newStringList = new String[listReviews.size()];
+        newStringList = listReviews.toArray(newStringList);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_tab2_row, newStringList);
+
+        reviewsTabList.setAdapter(adapter);
+
+    }
+
+    public void setUpTabTrailers(){
+
+
+        String[] trailersNamesArray = new String[listTrailers.size()];
+
+        for (int i = 0; i < listTrailers.size(); i++) {
+            TrailerListItem item = listTrailers.get(i);
+            trailersNamesArray[i] = item.trailerName;
+        }
+
+        ArrayAdapter<String> trailersListAdapter = new ArrayAdapter<String>(this, R.layout.list_tab2_row, trailersNamesArray);
+
+        trailersTabList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+
+                TrailerListItem item = listTrailers.get(position);
+                String url = item.trailerUrl;
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }
+        });
+
+        trailersTabList.setAdapter(trailersListAdapter);
     }
 
 
@@ -221,18 +240,14 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     }
 
-
     private class FavoriteButtonAction extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... params) {
             boolean isSuccessful = true;
             if (isFavorite) {
-                //myDb.deleteMovie(intent.getIntExtra(getString(R.string.ID), 0));
                 int movieId = intent.getIntExtra(getString(R.string.ID), 0);
                 contentResolver.delete(uri, String.valueOf(movieId), null);
             } else {
-                //long row = myDb.insertMovie(getContentValues());
-
                 contentResolver.insert(uri, getContentValues());
             }
             return isSuccessful;
@@ -243,13 +258,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
             super.onPostExecute(isSuccessful);
 
             if (isFavorite) {
-                addToFavorite.setText("ADD TO FAVORITE");
+                addToFavorite.setText(getString(R.string.add));
                 isFavorite = false;
-                showToast("Movie deleted from favorite");
+                showToast(getString(R.string.delete_message));
             } else {
-                addToFavorite.setText("DELETE FROM FAVORITE");
+                addToFavorite.setText(getString(R.string.delete));
                 isFavorite = true;
-                showToast("Movie added to favorite");
+                showToast(getString(R.string.add_message));
 
             }
         }
@@ -273,10 +288,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private void checkIfMovieInDb(){
         boolean movieInDb = myDb.CheckIsDataAlreadyInDBorNot("movies", "id", intent.getIntExtra(getString(R.string.ID),0));
         if(movieInDb){
-            addToFavorite.setText("DELETE FROM FAVORITE");
+            addToFavorite.setText(getString(R.string.delete));
             isFavorite = true;
         } else{
-            addToFavorite.setText("ADD TO FAVORITE");
+            addToFavorite.setText(getString(R.string.add));
             isFavorite = false;
         }
     }

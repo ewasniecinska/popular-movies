@@ -7,10 +7,14 @@
     <string name="image_url">http://image.tmdb.org/t/p/w342//</string>
     <string name="title_activity_movie_details">MovieDetails</string>
 
-    <!-- menu items -->
+    <!-- menu items and sort -->
     <string name="top_rated_movies">Top rated movies</string>
     <string name="popular_movies">Most popular movies</string>
     <string name="favorite_movies">Favorite</string>
+
+    <!-- Sort -->
+    <string name="sort">Sort</string>
+
 
     <!-- put extras - intent -->
     <string name="ID">ID</string>
@@ -24,6 +28,25 @@
     <string name="IF_ADULT">IF_ADULT</string>
     <string name="OVERVIEW">OVERVIEW</string>
     <string name="REALEASE_DATE">REALEASE_DATE</string>
+    <string name="TRAILERS">TRAILERS</string>
+    <string name="REVIEWS">REVIEWS</string>
+
+    <!-- Movie Details button -->
+    <string name="delete">DELETE FROM FAVORITE</string>
+    <string name="delete_message">Movie deleted from favorite</string>
+    <string name="add">ADD TO FAVORITE</string>
+    <string name="add_message">Movie added to favorite</string>
+
+    <!-- Sqlite and provider -->
+    <string name="DATABASE_NAME">movies_database</string>
+    <string name="TABLE_NAME">movies</string>
+    <string name="COLUMN_ID">id</string>
+    <string name="COLUMN_TITLE">title</string>
+    <string name="COLUMN_SCORE">score</string>
+    <string name="COLUMN_OVERVIEW">overview</string>
+    <string name="COLUMN_DATE">date</string>
+    <string name="COLUMN_POSTER">poster</string>
+
 
 
 </resources>
