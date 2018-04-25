@@ -12,44 +12,28 @@ Android app that help users discover popular and highly rated movies on the web.
 - Discover movie details like vote avarge, data release and descripton
 
 
-### Screens 
+### Screens:
 
 
 
 
 
-### Built With
+### Built With:
 
 * [Butterknife](http://jakewharton.github.io/butterknife/) - View binding
 * [Retrofit](http://square.github.io/retrofit/) - REST Client 
 * [Picasso](http://square.github.io/picasso/) - Used to retrieve images 
 
 
-### Installing
+### Add your API key:
 
-A step by step series of examples that tell you have to get a development env running
+Application is using The Movie Db Api, so you have to generate your own key. [Create key here.](https://developers.themoviedb.org/3/getting-started/introduction)
 
-Say what the step will be
-
+Add key to strings.xml
 ```
-Give the example
-```
-
-And repeat
-
-```
-until finished
+<string name="api_key">APP KEY</string>
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
-
-
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
 
 
 
