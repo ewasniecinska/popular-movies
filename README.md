@@ -14,6 +14,7 @@ Android app that help users discover popular and highly rated movies on the web.
 
 ### Screens:
 
+![alt text](https://image.ibb.co/emMSwx/screen.png)
 
 
 
