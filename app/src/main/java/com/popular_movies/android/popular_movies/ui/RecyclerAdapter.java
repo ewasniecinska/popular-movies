@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.popular_movies.android.popular_movies.api.Movie;
+import com.popular_movies.android.popular_movies.models.Movie;
 import com.popular_movies.android.popular_movies.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  * Created by ewasniecinska on 26.02.2018.
@@ -23,6 +25,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieH
     private Context context;
     private int row;
     private OnItemClickListener clickListener;
+
+    @BindView(R.id.layout) LinearLayout layout;
+    @BindView(R.id.poster) ImageView poster;
 
 
     public RecyclerAdapter (List<Movie> listOfMovies, Context context, int row){

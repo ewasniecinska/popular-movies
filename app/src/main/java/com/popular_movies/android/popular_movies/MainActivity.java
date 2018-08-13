@@ -18,10 +18,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.popular_movies.android.popular_movies.api.DiscoverResult;
-import com.popular_movies.android.popular_movies.api.Movie;
-import com.popular_movies.android.popular_movies.api.MoviesService;
+import com.popular_movies.android.popular_movies.api.RetrofitConnector;
 import com.popular_movies.android.popular_movies.data.MovieProvider;
+import com.popular_movies.android.popular_movies.models.DiscoverResult;
+import com.popular_movies.android.popular_movies.models.Movie;
 import com.popular_movies.android.popular_movies.ui.OnItemClickListener;
 import com.popular_movies.android.popular_movies.ui.RecyclerAdapter;
 import com.popular_movies.android.popular_movies.ui.RecyclerTouchListener;
@@ -29,21 +29,22 @@ import com.popular_movies.android.popular_movies.ui.RecyclerTouchListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
-    private RecyclerView recyclerView = null;
     private List<Movie> movies;
-
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
     ContentResolver contentResolver;
     Cursor cursor;
     Uri uri;
     SharedPreferences sharedpreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +53,14 @@ public class MainActivity extends AppCompatActivity {
 
         sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        ButterKnife.bind(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), calculateNoOfColumns(this));
         recyclerView.setLayoutManager(gridLayoutManager);
 
         uri = MovieProvider.CONTENT_URI;
         contentResolver = getContentResolver();
 
-        getSavedSortBy();
+        getSavedSortByCategory();
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 recyclerView, new OnItemClickListener() {
@@ -67,14 +68,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view, final int position) {
 
                 Intent intent = new Intent(getApplicationContext(), MovieDetailsActivity.class);
-                intent.putExtra(getString(R.string.ID), movies.get(position).getId());
-                Log.d("intent", String.valueOf(movies.get(position).getId()));
-                intent.putExtra(getString(R.string.TITLE), movies.get(position).getTitle());
-                intent.putExtra(getString(R.string.POSTER), movies.get(position).getPosterPath());
-                intent.putExtra(getString(R.string.VOTE_AVERAGE), movies.get(position).getVoteAverage());
-                intent.putExtra(getString(R.string.OVERVIEW), movies.get(position).getOverview());
-                intent.putExtra(getString(R.string.REALEASE_DATE), movies.get(position).getReleaseDate());
-
+                intent.putExtra("MOVIE", movies.get(position));
                 startActivity(intent);
             }
 
@@ -92,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
         return noOfColumns;
     }
 
-    // menu -> create
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
@@ -100,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    // menu -> items switch
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -117,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void getSavedSortBy(){
+    public void getSavedSortByCategory(){
         String sortMode = sharedpreferences.getString(getString(R.string.sort), "");
         switch (sortMode) {
             case "Top rated movies":
@@ -177,21 +169,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getListTopRatedOfMovies(){
-
         updateSharedPreference(getString(R.string.top_rated_movies));
 
         setTitle(getString(R.string.top_rated_movies));
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.api_base_url))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        MoviesService service = retrofit.create(MoviesService.class);
-        Call<DiscoverResult> call = service.getTopRatedMovies(getString(R.string.api_key));
-
+        Call<DiscoverResult> call = RetrofitConnector.getService().getTopRatedMovies(getString(R.string.api_key));
         callApi(call);
-
     }
 
     public void getListOfPopularMovies(){
@@ -199,14 +182,8 @@ public class MainActivity extends AppCompatActivity {
 
         setTitle(getString(R.string.popular_movies));
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.api_base_url))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        MoviesService service = retrofit.create(MoviesService.class);
-        Call<DiscoverResult> call = service.getMostPopularMovies(getString(R.string.api_key));
-
+        Call<DiscoverResult> call = RetrofitConnector.getService().getMostPopularMovies(getString(R.string.api_key));
         callApi(call);
     }
 
@@ -219,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<DiscoverResult> call, Throwable throwable) {
+                Log.e(getString(R.string.RETROFIT_ERROR), throwable.getMessage());
             }
         });
     }

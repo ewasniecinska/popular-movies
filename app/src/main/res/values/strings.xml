@@ -2,7 +2,7 @@
     <string name="app_name">Movies</string>
 
     <!-- THE MOVIE DB -->
-    <string name="api_key">APP KEY</string>
+    <string name="api_key">4681755dbe9184e2d9a51e441de6985b</string>
     <string name="api_base_url">https://api.themoviedb.org/3/</string>
     <string name="image_url">http://image.tmdb.org/t/p/w342//</string>
     <string name="title_activity_movie_details">MovieDetails</string>
@@ -46,7 +46,7 @@
     <string name="COLUMN_OVERVIEW">overview</string>
     <string name="COLUMN_DATE">date</string>
     <string name="COLUMN_POSTER">poster</string>
-
+    <string name="RETROFIT_ERROR">RETROFIT_ERROR</string>
 
 
 </resources>

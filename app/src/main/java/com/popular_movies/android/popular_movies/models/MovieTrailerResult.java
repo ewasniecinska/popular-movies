@@ -1,4 +1,4 @@
-package com.popular_movies.android.popular_movies.api;
+package com.popular_movies.android.popular_movies.models;
 
 import java.util.List;
 

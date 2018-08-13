@@ -1,5 +1,10 @@
 package com.popular_movies.android.popular_movies.api;
 
+import com.popular_movies.android.popular_movies.models.DiscoverResult;
+import com.popular_movies.android.popular_movies.models.Movie;
+import com.popular_movies.android.popular_movies.models.MovieReviewResult;
+import com.popular_movies.android.popular_movies.models.MovieTrailerResult;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

@@ -18,14 +18,15 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.popular_movies.android.popular_movies.api.MovieReview;
-import com.popular_movies.android.popular_movies.api.MovieReviewResult;
-import com.popular_movies.android.popular_movies.api.MovieTrailer;
-import com.popular_movies.android.popular_movies.api.MovieTrailerResult;
 import com.popular_movies.android.popular_movies.api.MoviesService;
 import com.popular_movies.android.popular_movies.data.MovieDatabase;
 import com.popular_movies.android.popular_movies.data.MovieProvider;
 import com.popular_movies.android.popular_movies.data.SQLiteHelper;
+import com.popular_movies.android.popular_movies.models.Movie;
+import com.popular_movies.android.popular_movies.models.MovieReview;
+import com.popular_movies.android.popular_movies.models.MovieReviewResult;
+import com.popular_movies.android.popular_movies.models.MovieTrailer;
+import com.popular_movies.android.popular_movies.models.MovieTrailerResult;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -47,7 +48,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
     public Intent intent;
     public List<String> listReviews = new ArrayList<String>();
     public List<TrailerListItem> listTrailers = new ArrayList<TrailerListItem>();
-    public Integer movieId;
     public SQLiteHelper myDb;
     boolean isFavorite = false;
 
@@ -61,8 +61,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @BindView(R.id.list_tab2) ListView reviewsTabList;
     @BindView(R.id.list_tab3) ListView trailersTabList;
 
-
-
+    Movie movie;
     ContentResolver contentResolver;
     Uri uri;
 
@@ -77,8 +76,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_details);
 
-        intent = getIntent();
-        movieId = intent.getIntExtra(getString(R.string.ID), 0);
+        movie = getIntent().getParcelableExtra("MOVIE");
 
         myDb = new SQLiteHelper(getBaseContext());
 
@@ -99,6 +97,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 new FavoriteButtonAction().execute();
             }
         });
+
+        setPoster();
 
         mTabHost.setup();
 
@@ -124,15 +124,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         setUpTabTrailers();
 
+        title.setText(movie.getTitle());
+        voteAvg.setText(movie.getVoteAverage());
+        releaseDate.setText(movie.getReleaseDate());
+        overview.setText(movie.getOverview());
 
 
-        title.setText(intent.getStringExtra(getString(R.string.TITLE)));
-        voteAvg.setText(intent.getStringExtra(getString(R.string.VOTE_AVERAGE)));
-        releaseDate.setText(intent.getStringExtra(getString(R.string.REALEASE_DATE)));
-        overview.setText(intent.getStringExtra(getString(R.string.OVERVIEW)));
+    }
 
-        // set poster
-        String image_url = getString(R.string.image_url) + intent.getStringExtra(getString(R.string.POSTER));
+    public void setPoster(){
+        String image_url = getString(R.string.image_url) + movie.getPosterPath();
         Picasso.with(getApplicationContext())
                 .load(image_url)
                 .placeholder(android.R.drawable.sym_def_app_icon)
@@ -192,7 +193,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         MoviesService service = retrofit.create(MoviesService.class);
 
-        Call<MovieReviewResult> callReviews = service.getMovieReviews(movieId, getString(R.string.api_key));
+        Call<MovieReviewResult> callReviews = service.getMovieReviews(movie.getId(), getString(R.string.api_key));
 
         callReviews.enqueue(new Callback<MovieReviewResult>() {
             @Override
@@ -213,7 +214,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         });
 
-        Call<MovieTrailerResult> callTrailers = service.getMovieTrailers(movieId, getString(R.string.api_key));
+        Call<MovieTrailerResult> callTrailers = service.getMovieTrailers(movie.getId(), getString(R.string.api_key));
 
         callTrailers.enqueue(new Callback<MovieTrailerResult>() {
             @Override
@@ -245,8 +246,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             boolean isSuccessful = true;
             if (isFavorite) {
-                int movieId = intent.getIntExtra(getString(R.string.ID), 0);
-                contentResolver.delete(uri, String.valueOf(movieId), null);
+                contentResolver.delete(uri, String.valueOf(movie.getId()), null);
             } else {
                 contentResolver.insert(uri, getContentValues());
             }
@@ -271,12 +271,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         private ContentValues getContentValues() {
             ContentValues values = new ContentValues();
-            values.put(MovieDatabase.COLUMN_ID, intent.getIntExtra(getString(R.string.ID), 0));
-            values.put(MovieDatabase.COLUMN_TITLE, intent.getStringExtra(getString(R.string.TITLE)));
-            values.put(MovieDatabase.COLUMN_SCORE, intent.getStringExtra(getString(R.string.VOTE_AVERAGE)));
-            values.put(MovieDatabase.COLUMN_OVERVIEW, intent.getStringExtra(getString(R.string.OVERVIEW)));
-            values.put(MovieDatabase.COLUMN_DATE, intent.getStringExtra(getString(R.string.REALEASE_DATE)));
-            values.put(MovieDatabase.COLUMN_POSTER, intent.getStringExtra("POSTER"));
+            values.put(MovieDatabase.COLUMN_ID, movie.getId());
+            values.put(MovieDatabase.COLUMN_TITLE, movie.getTitle());
+            values.put(MovieDatabase.COLUMN_SCORE, movie.getVoteAverage());
+            values.put(MovieDatabase.COLUMN_OVERVIEW, movie.getOverview());
+            values.put(MovieDatabase.COLUMN_DATE, movie.getReleaseDate());
+            values.put(MovieDatabase.COLUMN_POSTER, movie.getPosterPath());
             return values;
         }
     }
@@ -286,7 +286,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     }
 
     private void checkIfMovieInDb(){
-        boolean movieInDb = myDb.CheckIsDataAlreadyInDBorNot("movies", "id", intent.getIntExtra(getString(R.string.ID),0));
+        boolean movieInDb = myDb.CheckIsDataAlreadyInDBorNot("movies", "id", movie.getId());
         if(movieInDb){
             addToFavorite.setText(getString(R.string.delete));
             isFavorite = true;

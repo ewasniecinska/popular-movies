@@ -1,4 +1,7 @@
-package com.popular_movies.android.popular_movies.api;
+package com.popular_movies.android.popular_movies.models;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -8,7 +11,7 @@ import java.util.List;
  * Created by ewasniecinska on 20.02.2018.
  */
 
-public class Movie {
+public class Movie implements Parcelable{
 
     @SerializedName("vote_count")
     private int voteCount;
@@ -54,6 +57,65 @@ public class Movie {
         this.releaseDate = releaseDate;
 
     }
+
+    protected Movie(Parcel in) {
+        voteCount = in.readInt();
+        id = in.readInt();
+        video = in.readByte() != 0;
+        voteAverage = in.readString();
+        title = in.readString();
+        if (in.readByte() == 0) {
+            popularity = null;
+        } else {
+            popularity = in.readFloat();
+        }
+        posterPath = in.readString();
+        orginalLanguage = in.readString();
+        originalTitle = in.readString();
+        backdropPath = in.readString();
+        adult = in.readByte() != 0;
+        overview = in.readString();
+        releaseDate = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(voteCount);
+        dest.writeInt(id);
+        dest.writeByte((byte) (video ? 1 : 0));
+        dest.writeString(voteAverage);
+        dest.writeString(title);
+        if (popularity == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeFloat(popularity);
+        }
+        dest.writeString(posterPath);
+        dest.writeString(orginalLanguage);
+        dest.writeString(originalTitle);
+        dest.writeString(backdropPath);
+        dest.writeByte((byte) (adult ? 1 : 0));
+        dest.writeString(overview);
+        dest.writeString(releaseDate);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     public int getId(){
         return id;
