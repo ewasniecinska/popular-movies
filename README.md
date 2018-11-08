@@ -13,7 +13,7 @@ Android app that help users discover popular and highly rated movies on the web.
 
 ### Screens:
 
-![alt text](https://ibb.co/k8uKaA)
+![alt text](https://image.ibb.co/iCAsvA/Dribbble.png)
 
 
 
