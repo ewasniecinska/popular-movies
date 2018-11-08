@@ -2,14 +2,16 @@ package com.popular_movies.android.popular_movies.ui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.popular_movies.android.popular_movies.models.Movie;
 import com.popular_movies.android.popular_movies.R;
+import com.popular_movies.android.popular_movies.models.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -26,8 +28,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieH
     private int row;
     private OnItemClickListener clickListener;
 
-    @BindView(R.id.layout) LinearLayout layout;
+    @BindView(R.id.layout) FrameLayout layout;
     @BindView(R.id.poster) ImageView poster;
+    @BindView(R.id.movie_title) TextView movie_title;
+    @BindView(R.id.movie_score) TextView movie_score;
 
 
     public RecyclerAdapter (List<Movie> listOfMovies, Context context, int row){
@@ -37,13 +41,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieH
     }
 
     public static class MovieHolder extends RecyclerView.ViewHolder {
-        LinearLayout layout;
+        FrameLayout layout;
         ImageView poster;
+        TextView movie_title;
+        TextView movie_score;
 
         public MovieHolder(View v) {
             super(v);
-            layout = (LinearLayout) v.findViewById(R.id.layout);
+            layout = (FrameLayout) v.findViewById(R.id.layout);
             poster = (ImageView) v.findViewById(R.id.poster);
+            movie_title = v.findViewById(R.id.movie_title);
+            movie_score = v.findViewById(R.id.movie_score);
+
         }
     }
 
@@ -57,6 +66,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieH
     @Override
     public void onBindViewHolder(MovieHolder holder, int position) {
         String image_url = context.getString(R.string.image_url) + listOfMovies.get(position).getPosterPath();
+        String title = listOfMovies.get(position).getTitle();
+        holder.movie_title.setText(title);
+        String score = listOfMovies.get(position).getVoteAverage();
+        holder.movie_score.setText(score);
         Picasso.with(context)
                 .load(image_url)
                 .placeholder(android.R.drawable.dark_header)

@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Movie> movies;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     ContentResolver contentResolver;
     Cursor cursor;
     Uri uri;
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), calculateNoOfColumns(this));
         recyclerView.setLayoutManager(gridLayoutManager);
 
+        setSupportActionBar(toolbar);
         uri = MovieProvider.CONTENT_URI;
         contentResolver = getContentResolver();
 

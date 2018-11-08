@@ -8,15 +8,15 @@ import java.util.List;
 
 public class MovieReviewResult {
 
-        private int id;
-        private int page;
+        private String id;
+        private String page;
         private List<MovieReview> results;
         private int total_pages;
         private int total_results;
 
 
 
-        public MovieReviewResult(int id, int page, List<MovieReview> results, int total_pages, int total_results){
+        public MovieReviewResult(String id, String page, List<MovieReview> results, int total_pages, int total_results){
 
             this.id = id;
             this.page = page;

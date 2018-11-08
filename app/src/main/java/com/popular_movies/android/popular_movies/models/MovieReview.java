@@ -14,11 +14,11 @@ public class MovieReview implements Parcelable{
     private String author;
     private String content;
     @SerializedName("id")
-    private long reviewId;
+    private String reviewId;
     @SerializedName("url")
     private String reviewUrl;
 
-    public MovieReview(String author, String content, long reviewId, String reviewUrl){
+    public MovieReview(String author, String content, String reviewId, String reviewUrl){
         this.author = author;
         this.content = content;
         this.reviewId = reviewId;
@@ -28,7 +28,7 @@ public class MovieReview implements Parcelable{
     protected MovieReview(Parcel in) {
         author = in.readString();
         content = in.readString();
-        reviewId = in.readLong();
+        reviewId = in.readString();
         reviewUrl = in.readString();
     }
 
@@ -36,7 +36,7 @@ public class MovieReview implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(author);
         dest.writeString(content);
-        dest.writeLong(reviewId);
+        dest.writeString(reviewId);
         dest.writeString(reviewUrl);
     }
 
@@ -65,7 +65,7 @@ public class MovieReview implements Parcelable{
         return content;
     }
 
-    public long getReviewId() {
+    public String getReviewId() {
         return reviewId;
     }
 

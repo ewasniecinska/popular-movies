@@ -24,13 +24,17 @@
         <activity
             android:name=".MovieDetailsActivity"
             android:label="@string/title_activity_movie_details"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity" >></activity>
 
 
         <provider
             android:name="com.popular_movies.android.popular_movies.data.MovieProvider"
             android:authorities="com.popular_movies.android.popular_movies.data">
         </provider>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
