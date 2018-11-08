@@ -6,7 +6,6 @@ Android app that help users discover popular and highly rated movies on the web.
 
 - Fetch movie information using themoviedb.org web API
 - Discover popular and highly rated movies
-- Read users' reviews 
 - Watch movie trailers 
 - Save favorite movies 
 - Discover movie details like vote avarge, data release and descripton
@@ -14,7 +13,7 @@ Android app that help users discover popular and highly rated movies on the web.
 
 ### Screens:
 
-![alt text](https://image.ibb.co/emMSwx/screen.png)
+![alt text](https://ibb.co/k8uKaA)
 
 
 
@@ -23,7 +22,8 @@ Android app that help users discover popular and highly rated movies on the web.
 
 * [Butterknife](http://jakewharton.github.io/butterknife/) - View binding
 * [Retrofit](http://square.github.io/retrofit/) - REST Client 
-* [Picasso](http://square.github.io/picasso/) - Used to retrieve images 
+* [Picasso](http://square.github.io/picasso/) - Used to retrieve images
+* [SQLite](https://www.sqlite.org/index.html) 
 
 
 ### Add your API key:
